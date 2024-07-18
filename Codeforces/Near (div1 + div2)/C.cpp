@@ -224,32 +224,38 @@ void sieve()
 
 void solve()
 {
-    ll n,m;
-    cin>>n>>m;
-    vvl v(n,vl(m));
-    ll val=n*m;
-    ll num=(val+1)/2;
-    vvl b(n,vl(m,0));
-    for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            cin>>v[i][j];
-                
-                b[i][j] = (v[i][j]+(val+1))%val;
-                if(b[i][j] == 0){
-                    b[i][j]=val;
-                }
+     ll n,k;
+     cin>>n>>k;
+     vl v(n),pre(n,0);
+     for(int i=0;i<n;i++){
+        cin>>v[i];
+        if(i == 0) pre[i] = v[i];
+        else pre[i] = pre[i-1]+v[i];
+     }
+     ll val=0,ans=n*(n+1)/2;
+     vl dp(n,0);
+     for(int i=n-1;i>=0;i--){
+        if(i-1>=0){
+            val=pre[i-1];
         }
-    }
-    if( n == 1 && m == 1){
-        cout<<"-1"<<endl;
-        return;
-    }
-    for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            cout<<b[i][j]<<" ";
+        else val=0;
+        int idx = lower_bound(pre.begin(), pre.end(), k  + val+1) - pre.begin();
+        if(idx < n){
+            if(idx+1 < n){
+                dp[i] = 1 + dp[idx + 1];
+            }
+            else{
+                dp[i] = 1;
+            }
         }
-        cout<<endl;
-    }
+        ans-=dp[i];
+     }
+    //  for(auto x:dp){
+    //     cout<<x<<" ";
+    //  }
+     cout<<ans<<endl;
+
+
 }
 
 int main()
