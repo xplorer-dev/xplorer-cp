@@ -2,6 +2,7 @@
 #include <iostream>
 #include <set>
 #include <map>
+#include <queue>
 using namespace std;
 
 #define ll long long
@@ -224,8 +225,37 @@ void sieve()
 
 void solve()
 {
-    
-
+    ll int n,k;
+    cin>>n>>k;
+    vl v(n);
+    for(int i=0;i<n;i++){
+        cin>>v[i];
+    }
+    sort(all(v));
+    vl pre(n,v[0]);
+    for(int i=1;i<n;i++){
+        pre[i] = pre[i-1] + v[i];
+    }
+    map<ll,ll> mp;
+    ll int ans=0;
+    ll j=0;
+    ll curr=0;
+    for(int i=0;i<n;i++){
+          curr+=v[i];
+          while(v[i]-v[j]>1){
+            curr-=v[j];j++;
+          }
+          while(curr>k){
+            curr-=v[j];
+            j++;
+          }
+          ans=max(ans,curr);
+    }
+    for(auto x: v){
+        if(x<=k)
+        ans=max(ans,x);
+    }
+    cout<<ans<<endl;
 }
 
 int main()
